@@ -19,7 +19,7 @@ def line_prepender(filename, line):
         f.seek(0, 0)
         f.write(line.rstrip('\r\n') + '\n' + content)
         
-def insert_line(comment_subfix = "//", mypath = os.getcwd()):
+def insert_line(comment_subfix = "//", mypath = "", file_extension = ".js"):
     """
     Read all the files insert mypath and then insert a line at the begining of
     the file. This function is used to mark the files with the name of the file
@@ -34,10 +34,14 @@ def insert_line(comment_subfix = "//", mypath = os.getcwd()):
     None.
 
     """
+    if mypath =="":
+        mypath = os.getcwd()
+
     _, _, filenames = next(walk(mypath))
+    filenames =  [x for x in filenames if file_extension in x]
     for file in filenames:
         line = file + " " + file 
         path_components = os.getcwd().split("\\")
         line =  comment_subfix + "-------------- " + path_components[-3] + "\\" + path_components[-2] + "\\" + path_components[-1] + " => " + file + " --------------"
         print(line)
-        #line_prepender(file, line)
+        line_prepender(file, line)
